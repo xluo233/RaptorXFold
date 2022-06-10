@@ -138,7 +138,6 @@ class MSADataset(Dataset):
         self.dataset_type = dataset_type
         dataset_config = configs['DATASET'][dataset_type]
         self.A2M_folder = dataset_config['A2M_folder']
-        self.GroundTruth_folder = dataset_config['GroundTruth_folder']
         self.max_seq_num = dataset_config['max_seq_num']
         self.max_seq_len = dataset_config['max_seq_len']
         self.max_tokens = dataset_config['max_tokens']
@@ -315,6 +314,7 @@ class MSADataset(Dataset):
         if self.add_relative_position: MSA_encoding = Utils.add_relative_position(MSA_encoding)
 
         feature = {
+            'target': target,
             'seq_encoding': seq_encoding.astype(np.int),
             'MSA_encoding': MSA_encoding.astype(np.int),
             'seq_weight': seq_weight.astype(np.float32),
@@ -418,6 +418,7 @@ class MSADataset(Dataset):
             # create tensor
             # feature, labels, sample_info
             batch_feature = {
+                'target': [],
                 'seq_encoding': torch.zeros((batch_size, max_seq_len), dtype=torch.int64, device=self.device) + self.padding_idx,
                 'MSA_encoding': torch.zeros((batch_size, max_seq_num, max_seq_len), dtype=torch.int64, device=self.device) + self.padding_idx,
                 'seq_weight': torch.zeros((batch_size, max_seq_num), dtype=torch.float32, device=self.device),
@@ -443,6 +444,7 @@ class MSADataset(Dataset):
             for i, item in enumerate(samples):
                 # feature
                 feature = item[0]
+
                 seq_encoding = torch.as_tensor(feature['seq_encoding'], dtype=torch.int64, device=self.device)
                 MSA_encoding = torch.as_tensor(feature['MSA_encoding'], dtype=torch.int64, device=self.device)
                 seq_weight = torch.as_tensor(feature['seq_weight'], dtype=torch.float32, device=self.device)
@@ -450,6 +452,7 @@ class MSADataset(Dataset):
 
                 seq_num, seq_len = MSA_encoding.shape
 
+                batch_feature['target'].append(feature['target'])
                 batch_feature['seq_encoding'][i, :seq_len] = seq_encoding
                 batch_feature['MSA_encoding'][i, :seq_num, :seq_len] = MSA_encoding
                 batch_feature['seq_weight'][i, :seq_num] = seq_weight

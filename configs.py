@@ -166,7 +166,6 @@ CONFIGS = {
 
         'test':{'dataset_name': 'Example',
                 'A2M_folder': '',
-                'GroundTruth_folder': '',
                 'ALN_folder': '',
                 'TGT_folder': '',
                 'TPL_folder': '',

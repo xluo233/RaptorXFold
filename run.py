@@ -40,7 +40,8 @@ def main(args):
 
     for cycle_batch in dataloader:
         if not os.path.isdir(CONFIGS['DATASET'][dataset_type]['out_dir']): os.makedirs(CONFIGS['DATASET'][dataset_type]['out_dir'])
-        out_file = f"{CONFIGS['DATASET'][dataset_type]['out_dir']}/prediction.pkl.bz2"
+        target = cycle_batch[0][0]['target'][0]
+        out_file = f"{CONFIGS['DATASET'][dataset_type]['out_dir']}/{target}.pkl.bz2"
         print(f"Output path {out_file}")
 
         n_cycle = len(cycle_batch[0])

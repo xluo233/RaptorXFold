@@ -61,7 +61,7 @@ python3 run.py  --resume_from_checkpoint=./checkpoints/RaptorXFold.pt
 
 Output
 ```
-./Predictions/prediction.pkl.bz2
+./Predictions/{target}.pkl.bz2
 ```
 
 ## Prediction
@@ -76,3 +76,10 @@ prediction : {
     }
 }
 ```
+
+## Prepare Data
+Prepare data for `DatasetBuild_Local`, details are explianed in section **Materials and methods**.
+
+- MSA: [HHblits](https://github.com/soedinglab/hh-suite), [DeepMSA](https://zhanggroup.org/DeepMSA/)
+
+- Template: [NDThreader](https://github.com/wufandi/DL4SequenceAlignment)
